@@ -1,3 +1,4 @@
+import random
 import nltk
 from nltk.tokenize import RegexpTokenizer
 from collections import Counter, defaultdict
@@ -85,3 +86,27 @@ while True:
         print(f"Head: {head_request}")
         print("Key Error. The requested word is not in the model. Please input another word.\n")
 '''
+no_of_words = 1
+sentence = []
+
+while True:
+    first_word = random.choice(corpus)
+    if first_word[0].isupper():
+        break
+sentence.append(first_word)
+
+for no_of_sentences in range(10):
+
+    while no_of_words != 10:
+        population = list(set(bigram_dictionary[first_word]))
+        weights = []
+        for tail in dict2[first_word]:
+            weights.append(dict2[first_word][tail])
+        second_word = random.choices(population, weights)
+        sentence.append(second_word[0])
+        first_word = second_word[0]
+        no_of_words += 1
+    print(' '.join(sentence))
+    no_of_words = 0
+    first_word = sentence[-1]
+    sentence.clear()
