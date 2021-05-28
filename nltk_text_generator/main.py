@@ -1,6 +1,6 @@
 import nltk
 from nltk.tokenize import RegexpTokenizer
-from collections import Counter
+from collections import Counter, defaultdict
 
 nltk.download("punkt")
 
@@ -58,27 +58,30 @@ while True:
         print("Type Error. Please input an integer.")
 '''
 
-# This is to be updated (not working at the moment)
-bigram_dictionary = {}
+bigram_dictionary = defaultdict(list)
 
 for head, tail in bigrams:
     bigram_dictionary.setdefault(head, []).append(tail)
 
-for head in bigram_dictionary:
-    bigram_dictionary[head] = Counter(bigram_dictionary[head])
+# bigram_dictionary = {head1 : [tail11, tail12], head2: [tail21, tail22],...}
 
+dict2 = defaultdict(dict)
+for head in bigram_dictionary:
+    dict2[head] = Counter(bigram_dictionary[head])
+
+# dict2 = {head1 : {tail11: f11, tail12: f12}, head2: {tail21: f21, tail22: f22},...}
+
+# STAGE 3 TEST
+'''
 while True:
     head_request = input()
-    if (head_request in bigram_dictionary) or head_request == "exit":
-        break
-    else:
-        print(head_request)
-        print("The requested word is not in the model. Please input another word.")
-
-while True:
     if head_request == "exit":
         break
+    elif head_request in dict2:
+        print(f"Head: {head_request}")
+        for tail in dict2[head_request]:
+            print(f"Tail: {tail} Count: {dict2[head_request][tail]}")
     else:
         print(f"Head: {head_request}")
-        for tail in bigram_dictionary[head_request]:
-            print(f"Tail: {tail}:\tCount: {bigram_dictionary[head_request][tail]}")
+        print("Key Error. The requested word is not in the model. Please input another word.\n")
+'''
