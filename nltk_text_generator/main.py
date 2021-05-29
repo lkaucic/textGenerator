@@ -86,6 +86,9 @@ while True:
         print(f"Head: {head_request}")
         print("Key Error. The requested word is not in the model. Please input another word.\n")
 '''
+
+# STAGE 4 TEST
+'''
 no_of_words = 1
 sentence = []
 
@@ -110,3 +113,43 @@ for no_of_sentences in range(10):
     no_of_words = 0
     first_word = sentence[-1]
     sentence.clear()
+'''
+
+no_of_words = 1
+sentence = []
+
+
+def findif(sentence):
+    lista = sentence
+    for i in range(4, len(lista)):
+        if lista[i].endswith(".") or lista[i].endswith("?") or lista[i].endswith("!"):
+            return i
+    return -1
+
+
+for i in range(10):
+    while True:
+        first_word = random.choice(corpus)
+        if first_word[0].isupper() and (("." not in first_word) and ("!" not in first_word) and ("?" not in first_word)):
+            break
+    sentence.append(first_word)
+
+    while True:
+        population = list(set(bigram_dictionary[first_word]))
+        weights = []
+        for tail in dict2[first_word]:
+            weights.append(dict2[first_word][tail])
+        second_word = random.choices(population, weights)
+        if no_of_words > 5:
+            if sentence[-1].endswith(".") or sentence[-1].endswith("!") or sentence[-1].endswith("?"):
+                break
+        sentence.append(second_word[0])
+        first_word = second_word[0]
+        no_of_words += 1
+
+    index = findif(sentence)
+    sentence = sentence[:index+1]
+    print(' '.join(sentence))
+    no_of_words = 0
+    sentence.clear()
+
